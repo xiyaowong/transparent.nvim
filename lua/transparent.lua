@@ -2,7 +2,7 @@ local M = {}
 local vim = vim
 
 local config = {
-	enable = true,
+	enable = false,
 	groups = {
 		"Normal",
 		"Comment",
