@@ -8,10 +8,20 @@ Just rewrite [vim-transparent](https://github.com/Kjwon15/vim-transparent) in lu
 
 # Usage
 
+example config
+
 ```lua
 require("transparent").setup({
-	enable = false, -- enable transparent
-	extra_groups = {}, -- extra highlight-groups that should remove background color
+	enable = true, -- enable transparent
+	extra_groups = { -- extra highlight-groups that should remove background color
+    -- example of akinsho/nvim-bufferline.lua
+		"BufferLineTabClose",
+		"BufferlineBufferSelected",
+		"BufferLineFill",
+		"BufferLineBackground",
+		"BufferLineSeparator",
+		"BufferLineIndicatorSelected",
+  },
 })
 ```
 
