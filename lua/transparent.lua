@@ -1,8 +1,7 @@
 local M = {}
 local vim = vim
 
-local config = {}
-local default_config = {
+local config = {
 	enable = true,
 	groups = {
 		"Normal",
@@ -76,7 +75,7 @@ function M.toggle_transparent()
 end
 
 function M.setup(user_config)
-	config = vim.tbl_extend("force", default_config, user_config)
+	config = vim.tbl_extend("force", config, user_config)
 	if vim.g.transparent_enabled == nil then
 		vim.g.transparent_enabled = config.enable and 1 or 0
 	end
