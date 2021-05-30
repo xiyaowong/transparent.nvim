@@ -30,6 +30,9 @@ local config = {
 }
 
 local clear_group_bg = function(group)
+	if vim.fn.highlight_exists(group) == 0 then
+		return
+	end
 	local highlights = vim.api.nvim_exec("highlight " .. group, true)
 	if highlights:match("links to") then
 		return
