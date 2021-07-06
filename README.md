@@ -12,8 +12,10 @@ example config
 
 ```lua
 require("transparent").setup({
-  enable = true, -- enable transparent
-  extra_groups = { -- extra highlight-groups that should remove background color
+  enable = true, -- boolean: enable transparent
+  extra_groups = { -- table/string: additional groups that should be clear
+    -- In particular, when you set it to 'all', that means all avaliable groups
+
     -- example of akinsho/nvim-bufferline.lua
     "BufferLineTabClose",
     "BufferlineBufferSelected",
@@ -22,6 +24,7 @@ require("transparent").setup({
     "BufferLineSeparator",
     "BufferLineIndicatorSelected",
   },
+  exclude = {}, -- table: groups you don't want to clear
 })
 ```
 
