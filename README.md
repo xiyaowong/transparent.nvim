@@ -2,11 +2,11 @@
 
 Remove all background colors to make nvim transparent.
 
+![screenshot](https://user-images.githubusercontent.com/47070852/124546661-9353ce80-de5d-11eb-81ba-f8282e034d9f.gif)
+
 ---
 
-Just rewrite [vim-transparent](https://github.com/Kjwon15/vim-transparent) in lua.
-
-# Usage
+## Usage
 
 example config
 
@@ -42,10 +42,14 @@ global variable `g:transparent_enabled` has greater priority to option `enable`
 let g:transparent_enabled = 0
 ```
 
-# Commands
+## Commands
 
 ```
 :TransparentEnable
 :TransparentDisable
 :TransparentToggle
 ```
+
+## Aknowledgement
+
+[vim-transparent](https://github.com/Kjwon15/vim-transparent)
