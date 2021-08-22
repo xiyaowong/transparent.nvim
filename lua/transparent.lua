@@ -1,5 +1,4 @@
 local M = {}
-local vim = vim
 
 local config = {
   enable = false,
@@ -32,7 +31,7 @@ local config = {
 
 local clear_group_bg = function(group, highlights)
   if group then
-    if config.exclude[group] or vim.fn.highlight_exists(group) == 0 then
+    if vim.tbl_contains(config.exclude, group) or vim.fn.highlight_exists(group) == 0 then
       return
     end
     if not highlights then
@@ -46,7 +45,7 @@ local clear_group_bg = function(group, highlights)
     end
   end
 
-  if config.exclude[group] then
+  if vim.tbl_contains(config.exclude, group) then
     return
   end
 
@@ -108,13 +107,6 @@ end
 
 function M.setup(user_config)
   config = vim.tbl_extend("force", config, user_config)
-  -- convert exclude to a map
-  local map = {}
-  for _, g in ipairs(config.exclude) do
-    map[g] = g
-  end
-  config.exclude = map
-
   if vim.g.transparent_enabled == nil then
     vim.g.transparent_enabled = config.enable and 1 or 0
   end
