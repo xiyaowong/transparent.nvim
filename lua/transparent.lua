@@ -69,8 +69,21 @@ local clear_group_bg = function(group, highlights)
   )
 end
 
+-- notification for breaking change
+local function WARNING()
+  if type(vim.g.transparent_enabled) == "number" then
+    vim.notify(
+      "BREAKING CHANGE: The type of global variable `transparent_enabled` has been changed to boolean",
+      vim.log.levels.ERROR,
+      { title = "nvim-transparent" }
+    )
+  end
+end
+
 function M.clear_bg()
-  if vim.g.transparent_enabled ~= 1 then
+  WARNING()
+
+  if vim.g.transparent_enabled ~= true then
     return
   end
 
@@ -95,12 +108,10 @@ function M.clear_bg()
 end
 
 function M.toggle_transparent(option)
-  if option == 0 then
-    vim.g.transparent_enabled = 0
-  elseif option == 1 then
-    vim.g.transparent_enabled = 1
+  if option == nil then
+    vim.g.transparent_enabled = not vim.g.transparent_enabled
   else
-    vim.g.transparent_enabled = vim.g.transparent_enabled == 0 and 1 or 0
+    vim.g.transparent_enabled = option
   end
   vim.cmd("colorscheme " .. vim.g.colors_name)
 end
@@ -108,7 +119,7 @@ end
 function M.setup(user_config)
   config = vim.tbl_extend("force", config, user_config)
   if vim.g.transparent_enabled == nil then
-    vim.g.transparent_enabled = config.enable and 1 or 0
+    vim.g.transparent_enabled = config.enable
   end
 end
 

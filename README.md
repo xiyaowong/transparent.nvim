@@ -39,7 +39,7 @@ global variable `g:transparent_enabled` has greater priority to option `enable`
 **disable by default**
 
 ```vim
-let g:transparent_enabled = 0
+let g:transparent_enabled = v:false
 ```
 
 ## Commands
