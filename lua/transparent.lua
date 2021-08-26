@@ -70,10 +70,6 @@ local clear_group_bg = function(group, highlights)
 end
 
 local function _clear_bg()
-  if vim.g.transparent_enabled ~= true then
-    return
-  end
-
   for _, group in ipairs(config.groups) do
     clear_group_bg(group)
   end
@@ -95,12 +91,15 @@ local function _clear_bg()
 end
 
 function M.clear_bg()
+  if vim.g.transparent_enabled ~= true then
+    return
+  end
   -- ? some plugins calculate colors from basic highlights
   -- : clear immediately
   _clear_bg()
   -- ? some plugins use autocommands to redefine highlights
   -- : clear again after a while
-  vim.defer_fn(_clear_bg, 50)
+  vim.defer_fn(_clear_bg, 500)
 end
 
 function M.toggle_transparent(option)
