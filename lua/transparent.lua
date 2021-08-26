@@ -69,20 +69,7 @@ local clear_group_bg = function(group, highlights)
   )
 end
 
--- notification for breaking change
-local function WARNING()
-  if type(vim.g.transparent_enabled) == "number" then
-    vim.notify(
-      "BREAKING CHANGE: The type of global variable `transparent_enabled` has been changed to boolean",
-      vim.log.levels.ERROR,
-      { title = "nvim-transparent" }
-    )
-  end
-end
-
 local function _clear_bg()
-  WARNING()
-
   if vim.g.transparent_enabled ~= true then
     return
   end
