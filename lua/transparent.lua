@@ -108,7 +108,11 @@ function M.toggle_transparent(option)
   else
     vim.g.transparent_enabled = option
   end
-  vim.cmd("colorscheme " .. vim.g.colors_name)
+  if vim.g.colors_name then
+    vim.cmd("colorscheme " .. vim.g.colors_name)
+  else
+    vim.cmd("doautocmd ColorScheme")
+  end
 end
 
 function M.setup(user_config)
