@@ -34,7 +34,9 @@ you can also set the `groups` option to override the default groups. the default
 
 ---
 
-global variable `g:transparent_enabled` has greater priority to option `enable`
+The global variable `g:transparent_enabled` has greater priority to option `enable`.
+Some plugins or themes support setting transparency, and you can use this
+variable as a flag. eg: `vim.g.tokyonight_transparent = vim.g.transparent_enabled`
 
 **disable by default**
 
