@@ -4,6 +4,7 @@ local config = {
   enable = false,
   groups = {
     "Normal",
+    "NormalNC",
     "Comment",
     "Constant",
     "Special",

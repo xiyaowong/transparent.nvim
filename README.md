@@ -29,7 +29,7 @@ require("transparent").setup({
 ```
 
 you can also set the `groups` option to override the default groups. the default groups:
-`Normal` `Comment` `Constant` `Special` `Identifier` `Statement` `PreProc` `Type` `Underlined`
+`Normal` `NormalNC` `Comment` `Constant` `Special` `Identifier` `Statement` `PreProc` `Type` `Underlined`
 `Todo` `String` `Function` `Conditional` `Repeat` `Operator` `Structure` `LineNr` `NonText` `SignColumn` `CursorLineNr`.
 
 ---
