@@ -101,6 +101,8 @@ function M.clear_bg()
   -- ? some plugins use autocommands to redefine highlights
   -- : clear again after a while
   vim.defer_fn(_clear_bg, 500)
+  -- yes, clear 3 times!!!
+  vim.defer_fn(_clear_bg, 2000)
 end
 
 function M.toggle_transparent(option)
