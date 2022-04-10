@@ -102,7 +102,7 @@ function M.clear_bg()
   -- : clear again after a while
   vim.defer_fn(_clear_bg, 500)
   -- yes, clear 3 times!!!
-  vim.defer_fn(_clear_bg, 2000)
+  vim.defer_fn(_clear_bg, 5000)
 end
 
 function M.toggle_transparent(option)
