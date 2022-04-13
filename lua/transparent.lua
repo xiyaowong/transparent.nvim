@@ -31,43 +31,22 @@ local config = {
 }
 
 local clear_group_bg = function(group, highlights)
-  if group then
-    if vim.tbl_contains(config.exclude, group) or vim.fn.highlight_exists(group) == 0 then
-      return
-    end
-    if not highlights then
-      highlights = vim.api.nvim_exec("highlight " .. group, true)
-    end
-  else
-    if highlights then
-      group = vim.split(highlights, " ")[1]
-    else
-      return
-    end
-  end
-
-  if vim.tbl_contains(config.exclude, group) then
+  if not (group or highlights) then
     return
   end
 
-  if highlights:match("links to") then
+  if group and vim.fn.highlight_exists(group) == 0 then
     return
   end
 
-  local term = highlights:match([[term=([%w#]+)]]) or "NONE"
-  local ctermfg = highlights:match([[ctermfg=([%w#]+)]]) or "NONE"
-  local gui = highlights:match([[gui=([%w#]+)]]) or "NONE"
-  local guifg = highlights:match([[guifg=([%w#]+)]]) or "NONE"
-  vim.cmd(
-    string.format(
-      "hi %s term=%s ctermfg=%s ctermbg=NONE gui=%s guifg=%s guibg=NONE",
-      group,
-      term,
-      ctermfg,
-      gui,
-      guifg
-    )
-  )
+  group = group or vim.split(highlights, " ")[1]
+  highlights = highlights or vim.api.nvim_exec("hi " .. group, true)
+
+  if vim.tbl_contains(config.exclude, group) or highlights:match("links to") then
+    return
+  end
+
+  vim.cmd(string.format("hi %s ctermbg=NONE guibg=NONE", group))
 end
 
 local function _clear_bg()
