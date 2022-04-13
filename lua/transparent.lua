@@ -50,6 +50,9 @@ local clear_group_bg = function(group, highlights)
 end
 
 local function _clear_bg()
+  if vim.g.transparent_enabled ~= true then
+    return
+  end
   for _, group in ipairs(config.groups) do
     clear_group_bg(group)
   end
