@@ -45,20 +45,20 @@ local clear_group_bg = function(group, highlights)
   if vim.tbl_contains(config.exclude, group) or highlights:match("links to") then
     return
   end
-
-  local ok, err = pcall(vim.cmd, string.format("hi %s ctermbg=NONE guibg=NONE", group))
-  if not ok then
-    vim.api.nvim_echo(
-      {
-        {
-          string.format("[transparent]:error occurs when setting highlight `%s`: %s", group, err),
-          "ErrorMsg",
-        },
-      },
-      true,
-      {}
-    )
-  end
+  pcall(vim.cmd, string.format("hi %s ctermbg=NONE guibg=NONE", group))
+  -- local ok, err = pcall(vim.cmd, string.format("hi %s ctermbg=NONE guibg=NONE", group))
+  -- if not ok then
+  --   vim.api.nvim_echo(
+  --     {
+  --       {
+  --         string.format("[transparent]:error occurs when setting highlight `%s`: %s", group, err),
+  --         "ErrorMsg",
+  --       },
+  --     },
+  --     true,
+  --     {}
+  --   )
+  -- end
 end
 
 local function _clear_bg()
