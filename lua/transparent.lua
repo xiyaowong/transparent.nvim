@@ -28,6 +28,7 @@ local config = {
   },
   extra_groups = {},
   exclude = {},
+  ignore_linked_group = true,
 }
 
 local clear_group_bg = function(group, highlights)
@@ -42,7 +43,10 @@ local clear_group_bg = function(group, highlights)
   group = group or vim.split(highlights, " ")[1]
   highlights = highlights or vim.api.nvim_exec("hi " .. group, true)
 
-  if vim.tbl_contains(config.exclude, group) or highlights:match("links to") then
+  if
+    vim.tbl_contains(config.exclude, group)
+    or (config.ignore_linked_group and highlights:match("links to"))
+  then
     return
   end
   pcall(vim.cmd, string.format("hi %s ctermbg=NONE guibg=NONE", group))
