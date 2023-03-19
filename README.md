@@ -12,7 +12,12 @@ Example config
 
 ```lua
 require("transparent").setup({
-  enable = true, -- boolean: enable transparent
+  groups = { -- table: default groups
+    'Normal', 'NormalNC', 'Comment', 'Constant', 'Special', 'Identifier',
+    'Statement', 'PreProc', 'Type', 'Underlined', 'Todo', 'String', 'Function',
+    'Conditional', 'Repeat', 'Operator', 'Structure', 'LineNr', 'NonText',
+    'SignColumn', 'CursorLineNr', 'EndOfBuffer',
+  },
   extra_groups = { -- table/string: additional groups that should be cleared
     -- In particular, when you set it to 'all', that means all available groups
 
@@ -24,28 +29,18 @@ require("transparent").setup({
     "BufferLineSeparator",
     "BufferLineIndicatorSelected",
   },
-  exclude = {}, -- table: groups you don't want to clear
-  ignore_linked_group = true, -- boolean: don't clear a group that links to another group
+  exclude_groups = {}, -- table: groups you don't want to clear
 })
 ```
 
-You can also set the `groups` option to override the default groups.
-
-The default groups:
-`Normal` `NormalNC` `Comment` `Constant` `Special` `Identifier` `Statement` `PreProc` `Type` `Underlined`
-`Todo` `String` `Function` `Conditional` `Repeat` `Operator` `Structure` `LineNr` `NonText` `SignColumn` `CursorLineNr`.
-
 ---
 
-The global variable `g:transparent_enabled` has greater priority to option `enable`.
+This plugin will provide a global variable: `g:transparent_enabled`(lua: `vim.g.transparent_enabled`)
+
 Some plugins or themes support setting transparency, and you can use this
 variable as a flag. eg: `vim.g.tokyonight_transparent = vim.g.transparent_enabled`
 
-**Disable by default**
-
-```vim
-let g:transparent_enabled = v:false
-```
+**NOTE**: The plugin will cache and automatically apply transparency settings, so you only need to call the following command.
 
 ## Commands
 
