@@ -59,6 +59,15 @@ eg: `vim.g.tokyonight_transparent = vim.g.transparent_enabled`
 :TransparentDisable
 :TransparentToggle
 ```
+## Migration Guide 2023/3/20
+
+1. remove `enable=true` in your config.
+
+2. start Neovim
+
+3. Run `:TransparentEnable`
+
+It's done, the status of `enable` will cached and the transparent effect is applyed on you neovim, enjoy :)
 
 ## Aknowledgement
 
