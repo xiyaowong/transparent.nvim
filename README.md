@@ -33,8 +33,6 @@ require("transparent").setup({
 })
 ```
 
-There is another recommended way to set up additional highlight groups.
-
 You can also add additional highlight groups by explicitly assigning the variable "g:transparent_groups", which is the more recommended way.
 
 For example, if you want to add group `ExtraGroup`, you can do it like this:
