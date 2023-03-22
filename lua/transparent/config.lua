@@ -27,11 +27,14 @@ function M.set(opts)
     if vim.tbl_contains(keys, "enable") then
         table.insert(msgs, '- "enable" has been removed.')
     end
+    if type(opts.extra_groups) == "string" then
+        table.insert(msgs, '- "extra_groups" must be a table.')
+    end
     if not vim.tbl_isempty(msgs) then
         table.insert(
             msgs,
             1,
-            "Transparent.nvim has been refactored. Please check the README for detailed information."
+            "[transparent.nvim] Please check the README for detailed information."
         )
         local msg = table.concat(msgs, "\n")
         vim.defer_fn(function()

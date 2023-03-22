@@ -18,7 +18,7 @@ The execution of each function in the plugin is very fast and the time consumpti
 
 ## Usage
 
-Example config
+All available options:
 
 ```lua
 require("transparent").setup({
@@ -28,19 +28,34 @@ require("transparent").setup({
     'Conditional', 'Repeat', 'Operator', 'Structure', 'LineNr', 'NonText',
     'SignColumn', 'CursorLineNr', 'EndOfBuffer',
   },
-  extra_groups = { -- table/string: additional groups that should be cleared
-    -- In particular, when you set it to 'all', that means all available groups
-
-    -- example of akinsho/nvim-bufferline.lua
-    "BufferLineTabClose",
-    "BufferlineBufferSelected",
-    "BufferLineFill",
-    "BufferLineBackground",
-    "BufferLineSeparator",
-    "BufferLineIndicatorSelected",
-  },
+  extra_groups = {}, -- table: additional groups that should be cleared
   exclude_groups = {}, -- table: groups you don't want to clear
 })
+```
+
+There is another recommended way to set up additional highlight groups.
+
+You can also add additional highlight groups by explicitly assigning the variable "g:transparent_groups", which is the more recommended way.
+
+For example, if you want to add group `ExtraGroup`, you can do it like this:
+
+```lua
+vim.g.transparent_groups = vim.list_extend(vim.g.transparent_groups or {}, { "ExtraGroup" })
+-- vimscript: let g:transparent_groups = extend(get(g:, 'transparent_groups', []), ["ExtraGroup"])
+```
+
+**You can execute this statement anywhere and as many times as you want, without worrying about whether the plugin has already been loaded or not.**
+
+Here is an example about [akinsho/bufferline.nvim](https://github.com/akinsho/bufferline.nvim).
+Simply copy it and paste it after initializing bufferline in your configuration.
+
+```lua
+vim.g.transparent_groups = vim.list_extend(
+  vim.g.transparent_groups or {},
+  vim.tbl_map(function(v)
+    return v.hl_group
+  end, vim.tbl_values(require('bufferline.config').highlights))
+)
 ```
 
 ---

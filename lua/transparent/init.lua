@@ -7,37 +7,28 @@ if vim.g.transparent_enabled == nil then
     cache.read()
 end
 
+---@param group string|string[]
 local function clear_group(group)
-    if not vim.tbl_contains(config.exclude_groups, group) then
-        pcall(vim.cmd, string.format("hi %s ctermbg=NONE guibg=NONE", group))
+    local groups = type(group) == "string" and { group } or group
+    for _, v in ipairs(groups) do
+        if not vim.tbl_contains(config.exclude_groups, v) then
+            pcall(vim.cmd, string.format("hi %s ctermbg=NONE guibg=NONE", v))
+        end
     end
 end
 
 local function clear()
+    -- local start = vim.loop.hrtime()
+
     if vim.g.transparent_enabled ~= true then
         return
     end
 
-    -- groups
-    for _, group in ipairs(config.groups) do
-        M.clear_group(group)
-    end
+    clear_group(config.groups)
+    clear_group(config.extra_groups)
+    clear_group(type(vim.g.transparent_groups) == "table" and vim.g.transparent_groups or {})
 
-    -- extra_groups
-    if type(config.extra_groups) == "string" then
-        if config.extra_groups == "all" then
-            local hls = vim.split(vim.api.nvim_exec("highlight", true), "\n")
-            for _, hl in ipairs(hls) do
-                clear_group(vim.split(hl, " ")[1])
-            end
-        else
-            clear_group(config.extra_groups)
-        end
-    else
-        for _, group in ipairs(config.extra_groups) do
-            clear_group(group)
-        end
-    end
+    -- print((vim.loop.hrtime() - start) / 1e6, "ms")
 end
 
 function M.clear()
@@ -67,9 +58,27 @@ function M.toggle(opt)
     cache.write()
     -- A standard theme plugin should support the "colorscheme" command and set the g:colors_name
     if vim.g.colors_name then
-        vim.cmd("colorscheme " .. vim.g.colors_name)
+        vim.cmd.colorscheme(vim.g.colors_name)
     else
         clear()
+    end
+end
+
+function M.handle_groups_changed(arg)
+    local old = arg.old or {}
+    local new = arg.new or {}
+    if
+        type(old) == "table"
+        and type(new) == "table"
+        and vim.tbl_islist(old)
+        and vim.tbl_islist(new)
+    then
+        clear_group(vim.tbl_filter(function(v)
+            -- print(v)
+            return not vim.tbl_contains(old, v)
+        end, new))
+    else
+        vim.notify("g:transparent_groups must be a list")
     end
 end
 
