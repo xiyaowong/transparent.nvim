@@ -12,7 +12,15 @@ local function clear_group(group)
     local groups = type(group) == "string" and { group } or group
     for _, v in ipairs(groups) do
         if not vim.tbl_contains(config.exclude_groups, v) then
-            pcall(vim.cmd, string.format("hi %s ctermbg=NONE guibg=NONE", v))
+            pcall(function()
+                local attrs = vim.tbl_extend(
+                    "force",
+                    vim.api.nvim_get_hl_by_name(v, true),
+                    { bg = "NONE", ctermbg = "NONE" }
+                )
+                attrs[true] = nil
+                vim.api.nvim_set_hl(0, v, attrs)
+            end)
         end
     end
 end
