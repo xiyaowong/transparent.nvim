@@ -66,7 +66,7 @@ function M.toggle(opt)
     cache.write()
     -- A standard theme plugin should support the "colorscheme" command and set the g:colors_name
     if vim.g.colors_name then
-        vim.cmd.colorscheme(vim.g.colors_name)
+        vim.cmd("silent! colorscheme" .. vim.g.colors_name)
     else
         clear()
     end
@@ -95,8 +95,8 @@ M.clear_group = clear_group
 
 -- Avoid strange issues caused by lazy loading.
 -- The main issue is the order of defining transparency options for theme plugins and this plugin.
-vim.defer_fn(function()
-    M.toggle(vim.g.transparent_enabled)
-end, 500)
+-- vim.defer_fn(function()
+--     M.toggle(vim.g.transparent_enabled)
+-- end, 500)
 
 return M
