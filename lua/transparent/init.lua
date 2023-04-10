@@ -66,7 +66,8 @@ function M.toggle(opt)
     cache.write()
     -- A standard theme plugin should support the "colorscheme" command and set the g:colors_name
     if vim.g.colors_name then
-        vim.cmd("silent! colorscheme" .. vim.g.colors_name)
+        -- So many pcall...
+        pcall(vim.cmd.colorscheme, vim.g.colors_name)
     else
         clear()
     end
