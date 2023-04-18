@@ -65,6 +65,21 @@ eg: `vim.g.tokyonight_transparent = vim.g.transparent_enabled`
 
 **NOTE**: The plugin will cache and automatically apply transparency settings, so you only need to call the following command.
 
+## FAQ
+
+### How to enable transparent for plugin panels?
+
+You can try adding this highlight group to the options:
+
+```lua
+{
+  extra_groups = {
+    "NormalFloat", -- plugins which have float panel such as Lazy, Mason, LspInfo
+    "NvimTreeNormal" -- NvimTree
+  },
+}
+```
+
 ## Commands
 
 ```
