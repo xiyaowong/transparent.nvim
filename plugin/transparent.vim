@@ -1,3 +1,5 @@
+if !has('nvim')  | finish | endif
+
 if exists('g:loaded_transparent') | finish | endif
 
 let g:loaded_transparent = 1
