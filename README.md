@@ -61,7 +61,7 @@ vim.g.transparent_groups = vim.list_extend(
 This plugin will provide a global variable: `g:transparent_enabled`(lua: `vim.g.transparent_enabled`)
 
 Some plugins or themes support setting transparency, and you can use this variable as a flag.<br/>
-eg: `vim.g.tokyonight_transparent = vim.g.transparent_enabled`
+eg: `require("tokyonight").setup{ transparent = vim.g.transparent_enabled }`
 
 **NOTE**: The plugin will cache and automatically apply transparency settings, so you only need to call the following command.
 
