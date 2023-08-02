@@ -80,6 +80,12 @@ You can try adding this highlight group to the options:
 }
 ```
 
+### Floating windows?
+
+It is not recommended to set the floating window to be transparent, it will become very weird, and everything will be mixed together.
+
+For more information: https://github.com/xiyaowong/transparent.nvim/issues?q=label%3A%22float+window%22+sort%3Aupdated-desc
+
 ## Commands
 
 ```
