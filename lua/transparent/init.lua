@@ -12,6 +12,8 @@ local group_prefix_list = {}
 
 ---@param group string|string[]
 local function clear_group(group)
+    -- local start = vim.loop.hrtime()
+
     local groups = type(group) == "string" and { group } or group
     for _, v in ipairs(groups) do
         if not vim.tbl_contains(config.exclude_groups, v) then
@@ -23,6 +25,8 @@ local function clear_group(group)
             end
         end
     end
+
+    -- print((vim.loop.hrtime() - start) / 1e6, "ms")
 end
 
 local function clear()
@@ -57,11 +61,11 @@ function M.clear()
     --- again
     vim.defer_fn(clear, 1e3)
     --- yes, clear 4 times!!!
+    vim.defer_fn(clear, 3e3)
+    --- Don't worry about performance, it's very cheap!
     vim.defer_fn(clear, 5e3)
-    --- 0.o
-    vim.defer_fn(clear, 10e3)
-    --- x.x
-    vim.defer_fn(clear, 20e3)
+    vim.defer_fn(clear, 7e3)
+    vim.defer_fn(clear, 9e3)
 end
 
 function M.toggle(opt)
@@ -99,10 +103,12 @@ function M.handle_groups_changed(arg)
 end
 
 function M.clear_prefix(prefix)
-    if not prefix or prefix == "" or vim.tbl_contains(group_prefix_list, prefix) then
+    if not prefix or prefix == "" then
         return
     end
-    table.insert(group_prefix_list, prefix)
+    if not vim.tbl_contains(group_prefix_list, prefix) then
+        table.insert(group_prefix_list, prefix)
+    end
     clear_group(vim.fn.getcompletion(prefix, "highlight"))
 end
 
