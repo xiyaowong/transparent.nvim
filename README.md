@@ -56,6 +56,24 @@ vim.g.transparent_groups = vim.list_extend(
 )
 ```
 
+- `nvim-neo-tree/neo-tree.nvim`
+
+```lua
+vim.g.transparent_groups = vim.list_extend(
+    vim.g.transparent_groups or {},
+    vim.fn.getcompletion('NeoTree', 'highlight')
+)
+```
+
+- `nvim-lualine/lualine.nvim`
+
+```lua
+vim.g.transparent_groups = vim.list_extend(
+    vim.g.transparent_groups or {},
+    vim.fn.getcompletion('lualine', 'highlight')
+)
+```
+
 ---
 
 This plugin will provide a global variable: `g:transparent_enabled`(lua: `vim.g.transparent_enabled`)
@@ -93,6 +111,7 @@ For more information: https://github.com/xiyaowong/transparent.nvim/issues?q=lab
 :TransparentDisable
 :TransparentToggle
 ```
+
 ## Migration Guide 2023/3/20
 
 1. remove `enable=true` in your config.
