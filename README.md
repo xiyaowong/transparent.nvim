@@ -21,7 +21,7 @@ The execution of each function in the plugin is very fast and the time consumpti
 All available options:
 
 ```lua
-require("transparent").setup({
+require("transparent").setup({ -- Optional, you don't have to run setup.
   groups = { -- table: default groups
     'Normal', 'NormalNC', 'Comment', 'Constant', 'Special', 'Identifier',
     'Statement', 'PreProc', 'Type', 'Underlined', 'Todo', 'String', 'Function',
@@ -33,7 +33,11 @@ require("transparent").setup({
 })
 ```
 
-You can also add additional highlight groups by explicitly assigning the variable "g:transparent_groups", which is the more recommended way.
+Normally, you don't need to call setup. There are two better ways for configuration.
+
+### `g:transparent_groups`
+
+Add additional highlight groups by explicitly assigning the variable `g:transparent_groups`.
 
 For example, if you want to add group `ExtraGroup`, you can do it like this:
 
@@ -56,22 +60,32 @@ vim.g.transparent_groups = vim.list_extend(
 )
 ```
 
+### `clear_prefix`
+
+Some plugins define highlights dynamically, especially the highlights of icons. e.g. BufferLineDevIcon*, lualine\_*\_DevIcon\*.
+
+So, this plugin provide a helper function `clear_prefix`. It will clear all highlight groups starting with the prefix.
+
+For some plugins of ui, you would like to clear all highlights. At this point you should use `clear_prefix`.
+
+e.g.
+
+- `akinsho/bufferline.nvim`
+
+```lua
+require('transparent').clear_prefix('BufferLine')
+```
+
 - `nvim-neo-tree/neo-tree.nvim`
 
 ```lua
-vim.g.transparent_groups = vim.list_extend(
-    vim.g.transparent_groups or {},
-    vim.fn.getcompletion('NeoTree', 'highlight')
-)
+require('transparent').clear_prefix('NeoTree')
 ```
 
 - `nvim-lualine/lualine.nvim`
 
 ```lua
-vim.g.transparent_groups = vim.list_extend(
-    vim.g.transparent_groups or {},
-    vim.fn.getcompletion('lualine', 'highlight')
-)
+require('transparent').clear_prefix('lualine')
 ```
 
 ---

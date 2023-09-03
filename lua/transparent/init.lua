@@ -7,20 +7,20 @@ if vim.g.transparent_enabled == nil then
     cache.read()
 end
 
+-- used for getcompletion to get highlight groups
+local group_prefix_list = {}
+
 ---@param group string|string[]
 local function clear_group(group)
     local groups = type(group) == "string" and { group } or group
     for _, v in ipairs(groups) do
         if not vim.tbl_contains(config.exclude_groups, v) then
-            pcall(function()
-                local attrs = vim.tbl_extend(
-                    "force",
-                    vim.api.nvim_get_hl_by_name(v, true),
-                    { bg = "NONE", ctermbg = "NONE" }
-                )
+            local ok, prev_attrs = pcall(vim.api.nvim_get_hl_by_name, v, true)
+            if ok and (prev_attrs.bg or prev_attrs.ctermbg or prev_attrs.background) then
+                local attrs = vim.tbl_extend("force", prev_attrs, { bg = "NONE", ctermbg = "NONE" })
                 attrs[true] = nil
                 vim.api.nvim_set_hl(0, v, attrs)
-            end)
+            end
         end
     end
 end
@@ -35,6 +35,9 @@ local function clear()
     clear_group(config.groups)
     clear_group(config.extra_groups)
     clear_group(type(vim.g.transparent_groups) == "table" and vim.g.transparent_groups or {})
+    for _, prefix in ipairs(group_prefix_list) do
+        clear_group(vim.fn.getcompletion(prefix, "highlight"))
+    end
 
     -- print((vim.loop.hrtime() - start) / 1e6, "ms")
 end
@@ -52,9 +55,13 @@ function M.clear()
     --- : clear again after a while
     vim.defer_fn(clear, 500)
     --- again
-    vim.defer_fn(clear, 1000)
+    vim.defer_fn(clear, 1e3)
     --- yes, clear 4 times!!!
-    vim.defer_fn(clear, 5000)
+    vim.defer_fn(clear, 5e3)
+    --- 0.o
+    vim.defer_fn(clear, 10e3)
+    --- x.x
+    vim.defer_fn(clear, 20e3)
 end
 
 function M.toggle(opt)
@@ -91,13 +98,15 @@ function M.handle_groups_changed(arg)
     end
 end
 
+function M.clear_prefix(prefix)
+    if not prefix or prefix == "" or vim.tbl_contains(group_prefix_list, prefix) then
+        return
+    end
+    table.insert(group_prefix_list, prefix)
+    clear_group(vim.fn.getcompletion(prefix, "highlight"))
+end
+
 M.setup = config.set
 M.clear_group = clear_group
-
--- Avoid strange issues caused by lazy loading.
--- The main issue is the order of defining transparency options for theme plugins and this plugin.
--- vim.defer_fn(function()
---     M.toggle(vim.g.transparent_enabled)
--- end, 500)
 
 return M
