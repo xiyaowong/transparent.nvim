@@ -64,8 +64,6 @@ function M.clear()
     vim.defer_fn(clear, 3e3)
     --- Don't worry about performance, it's very cheap!
     vim.defer_fn(clear, 5e3)
-    vim.defer_fn(clear, 7e3)
-    vim.defer_fn(clear, 9e3)
 end
 
 function M.toggle(opt)
