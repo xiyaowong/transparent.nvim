@@ -46,24 +46,31 @@ local function clear()
     -- print((vim.loop.hrtime() - start) / 1e6, "ms")
 end
 
-function M.clear()
-    if vim.g.transparent_enabled ~= true then
-        return
+local function post_hook()
+    if type(config.post_hook) == "function" then
+        pcall(config.post_hook)
     end
-    --- ? some plugins calculate colors from basic highlights
-    --- : clear immediately
-    -- local start = vim.loop.hrtime()
-    clear()
-    -- print((vim.loop.hrtime() - start) / 1e6, 'ms')
-    --- ? some plugins use autocommands to redefine highlights
-    --- : clear again after a while
-    vim.defer_fn(clear, 500)
-    --- again
-    vim.defer_fn(clear, 1e3)
-    --- yes, clear 4 times!!!
-    vim.defer_fn(clear, 3e3)
-    --- Don't worry about performance, it's very cheap!
-    vim.defer_fn(clear, 5e3)
+    vim.api.nvim_exec_autocmds("User", { pattern = "TransparentClear", modeline = false }) -- execute autocmd
+end
+
+function M.clear()
+    if vim.g.transparent_enabled then
+        --- ? some plugins calculate colors from basic highlights
+        --- : clear immediately
+        -- local start = vim.loop.hrtime()
+        clear()
+        -- print((vim.loop.hrtime() - start) / 1e6, 'ms')
+        --- ? some plugins use autocommands to redefine highlights
+        --- : clear again after a while
+        vim.defer_fn(clear, 500)
+        --- again
+        vim.defer_fn(clear, 1e3)
+        --- yes, clear 4 times!!!
+        vim.defer_fn(clear, 3e3)
+        --- Don't worry about performance, it's very cheap!
+        vim.defer_fn(clear, 5e3)
+    end
+    post_hook()
 end
 
 function M.toggle(opt)
@@ -79,6 +86,7 @@ function M.toggle(opt)
         pcall(vim.cmd.colorscheme, vim.g.colors_name)
     else
         clear()
+        post_hook()
     end
 end
 
