@@ -3,6 +3,8 @@ local M = {}
 local config = require("transparent.config")
 local cache = require("transparent.cache")
 
+local islist = vim.islist or vim.tbl_islist
+
 if vim.g.transparent_enabled == nil then
     cache.read()
 end
@@ -93,12 +95,7 @@ end
 function M.handle_groups_changed(arg)
     local old = arg.old or {}
     local new = arg.new or {}
-    if
-        type(old) == "table"
-        and type(new) == "table"
-        and vim.tbl_islist(old)
-        and vim.tbl_islist(new)
-    then
+    if type(old) == "table" and type(new) == "table" and islist(old) and islist(new) then
         clear_group(vim.tbl_filter(function(v)
             -- print(v)
             return not vim.tbl_contains(old, v)
