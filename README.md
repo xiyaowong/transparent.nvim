@@ -21,16 +21,23 @@ The execution of each function in the plugin is very fast and the time consumpti
 All available options:
 
 ```lua
-require("transparent").setup({ -- Optional, you don't have to run setup.
-  groups = { -- table: default groups
+ -- Optional, you don't have to run setup.
+require("transparent").setup({
+  -- table: default groups
+  groups = {
     'Normal', 'NormalNC', 'Comment', 'Constant', 'Special', 'Identifier',
     'Statement', 'PreProc', 'Type', 'Underlined', 'Todo', 'String', 'Function',
     'Conditional', 'Repeat', 'Operator', 'Structure', 'LineNr', 'NonText',
     'SignColumn', 'CursorLine', 'CursorLineNr', 'StatusLine', 'StatusLineNC',
     'EndOfBuffer',
   },
-  extra_groups = {}, -- table: additional groups that should be cleared
-  exclude_groups = {}, -- table: groups you don't want to clear
+  -- table: additional groups that should be cleared
+  extra_groups = {},
+  -- table: groups you don't want to clear
+  exclude_groups = {},
+  -- function: code to be executed after highlight groups are cleared
+  -- Also the user event "TransparentClear" will be triggered
+  on_clear = function() end,
 })
 ```
 
@@ -98,6 +105,14 @@ eg: `require("tokyonight").setup{ transparent = vim.g.transparent_enabled }`
 
 **NOTE**: The plugin will cache and automatically apply transparency settings, so you only need to call the following command.
 
+## Commands
+
+```
+:TransparentEnable
+:TransparentDisable
+:TransparentToggle
+```
+
 ## FAQ
 
 ### How to enable transparent for plugin panels?
@@ -118,14 +133,6 @@ You can try adding this highlight group to the options:
 It is not recommended to set the floating window to be transparent, it will become very weird, and everything will be mixed together.
 
 For more information: https://github.com/xiyaowong/transparent.nvim/issues?q=label%3A%22float+window%22+sort%3Aupdated-desc
-
-## Commands
-
-```
-:TransparentEnable
-:TransparentDisable
-:TransparentToggle
-```
 
 ## Migration Guide 2023/3/20
 
