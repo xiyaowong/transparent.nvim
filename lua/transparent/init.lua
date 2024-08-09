@@ -35,7 +35,7 @@ end
 local function clear()
     -- local start = vim.loop.hrtime()
 
-    if vim.g.transparent_enabled ~= true then
+    if not vim.g.transparent_enabled then
         return
     end
 
@@ -50,22 +50,24 @@ local function clear()
 end
 
 function M.clear()
-    if vim.g.transparent_enabled then
-        --- ? some plugins calculate colors from basic highlights
-        --- : clear immediately
-        -- local start = vim.loop.hrtime()
-        clear()
-        -- print((vim.loop.hrtime() - start) / 1e6, 'ms')
-        --- ? some plugins use autocommands to redefine highlights
-        --- : clear again after a while
-        vim.defer_fn(clear, 500)
-        --- again
-        vim.defer_fn(clear, 1e3)
-        --- yes, clear 4 times!!!
-        vim.defer_fn(clear, 3e3)
-        --- Don't worry about performance, it's very cheap!
-        vim.defer_fn(clear, 5e3)
+    if not vim.g.transparent_enabled then
+        return
     end
+
+    --- ? some plugins calculate colors from basic highlights
+    --- : clear immediately
+    -- local start = vim.loop.hrtime()
+    clear()
+    -- print((vim.loop.hrtime() - start) / 1e6, 'ms')
+    --- ? some plugins use autocommands to redefine highlights
+    --- : clear again after a while
+    vim.defer_fn(clear, 500)
+    --- again
+    vim.defer_fn(clear, 1e3)
+    --- yes, clear 4 times!!!
+    vim.defer_fn(clear, 3e3)
+    --- Don't worry about performance, it's very cheap!
+    vim.defer_fn(clear, 5e3)
 
     --- post hooks
     api.nvim_exec_autocmds("User", { pattern = "TransparentClear", modeline = false })
