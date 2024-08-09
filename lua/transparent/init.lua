@@ -1,5 +1,6 @@
 local M = {}
 
+local fn, api = vim.fn, vim.api
 local config = require("transparent.config")
 local cache = require("transparent.cache")
 
@@ -19,11 +20,11 @@ local function clear_group(group)
     local groups = type(group) == "string" and { group } or group
     for _, v in ipairs(groups) do
         if not vim.tbl_contains(config.exclude_groups, v) then
-            local ok, prev_attrs = pcall(vim.api.nvim_get_hl_by_name, v, true)
+            local ok, prev_attrs = pcall(api.nvim_get_hl_by_name, v, true)
             if ok and (prev_attrs.background or prev_attrs.bg or prev_attrs.ctermbg) then
                 local attrs = vim.tbl_extend("force", prev_attrs, { bg = "NONE", ctermbg = "NONE" })
                 attrs[true] = nil
-                vim.api.nvim_set_hl(0, v, attrs)
+                api.nvim_set_hl(0, v, attrs)
             end
         end
     end
@@ -42,17 +43,10 @@ local function clear()
     clear_group(config.extra_groups)
     clear_group(type(vim.g.transparent_groups) == "table" and vim.g.transparent_groups or {})
     for _, prefix in ipairs(group_prefix_list) do
-        clear_group(vim.fn.getcompletion(prefix, "highlight"))
+        clear_group(fn.getcompletion(prefix, "highlight"))
     end
 
     -- print((vim.loop.hrtime() - start) / 1e6, "ms")
-end
-
-local function post_hook()
-    if type(config.post_hook) == "function" then
-        pcall(config.post_hook)
-    end
-    vim.api.nvim_exec_autocmds("User", { pattern = "TransparentClear", modeline = false }) -- execute autocmd
 end
 
 function M.clear()
@@ -72,7 +66,10 @@ function M.clear()
         --- Don't worry about performance, it's very cheap!
         vim.defer_fn(clear, 5e3)
     end
-    post_hook()
+
+    --- post hooks
+    api.nvim_exec_autocmds("User", { pattern = "TransparentClear", modeline = false })
+    config.on_clear()
 end
 
 function M.toggle(opt)
@@ -87,8 +84,7 @@ function M.toggle(opt)
         -- So many pcall...
         pcall(vim.cmd.colorscheme, vim.g.colors_name)
     else
-        clear()
-        post_hook()
+        M.clear()
     end
 end
 
@@ -112,7 +108,7 @@ function M.clear_prefix(prefix)
     if not vim.tbl_contains(group_prefix_list, prefix) then
         table.insert(group_prefix_list, prefix)
     end
-    clear_group(vim.fn.getcompletion(prefix, "highlight"))
+    clear_group(fn.getcompletion(prefix, "highlight"))
 end
 
 M.setup = config.set

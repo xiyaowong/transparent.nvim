@@ -11,42 +11,17 @@ local config = {
   },
   extra_groups = {},
   exclude_groups = {},
+  on_clear = function () end
 }
 -- stylua: ignore end
 
 function M.set(opts)
-    opts = opts or {}
-
-    local keys = vim.tbl_keys(opts)
-    local msgs = {}
-    if vim.tbl_contains(keys, "exclude") then
-        table.insert(msgs, '- "exclude" has been changed to "exclude_groups".')
-    end
-    if vim.tbl_contains(keys, "ignore_linked_group") then
-        table.insert(msgs, '- "ignore_linked_group" has been removed.')
-    end
-    if vim.tbl_contains(keys, "enable") then
-        table.insert(msgs, '- "enable" has been removed.')
-    end
-    if type(opts.extra_groups) == "string" then
-        table.insert(msgs, '- "extra_groups" must be a table.')
-    end
-    if not vim.tbl_isempty(msgs) then
-        table.insert(
-            msgs,
-            1,
-            "[transparent.nvim] Please check the README for detailed information."
-        )
-        local msg = table.concat(msgs, "\n")
-        vim.defer_fn(function()
-            vim.notify(msg, vim.log.levels.WARN)
-        end, 3000)
-    end
-
-    opts.enable = nil
-    opts.ignore_linked_group = nil
-    opts.exclude_groups = opts.exclude_groups or opts.exclude
-
+    vim.validate({
+        groups = { opts.groups, "t", true },
+        extra_groups = { opts.groups, "t", true },
+        exclude_groups = { opts.groups, "t", true },
+        on_clear = { opts.groups, "f", true },
+    })
     config = vim.tbl_extend("force", config, opts or {})
 end
 
