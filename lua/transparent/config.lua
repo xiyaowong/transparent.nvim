@@ -16,6 +16,10 @@ local config = {
 -- stylua: ignore end
 
 function M.set(opts)
+    -- Handle regression if opts was not passed.
+    -- Behaviour existed prior to d96b424
+    opts = opts or {}
+
     vim.validate({
         groups = { opts.groups, "t", true },
         extra_groups = { opts.extra_groups, "t", true },
