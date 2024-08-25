@@ -16,13 +16,15 @@ local config = {
 -- stylua: ignore end
 
 function M.set(opts)
+    opts = opts or {}
+
     vim.validate({
         groups = { opts.groups, "t", true },
         extra_groups = { opts.extra_groups, "t", true },
         exclude_groups = { opts.exclude_groups, "t", true },
         on_clear = { opts.on_clear, "f", true },
     })
-    config = vim.tbl_extend("force", config, opts or {})
+    config = vim.tbl_extend("force", config, opts)
 end
 
 return setmetatable(M, {
