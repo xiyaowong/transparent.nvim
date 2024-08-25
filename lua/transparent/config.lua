@@ -19,6 +19,7 @@ function M.set(opts)
     opts = opts or {}
 
     vim.validate({
+        opts = { opts, "t" },
         groups = { opts.groups, "t", true },
         extra_groups = { opts.extra_groups, "t", true },
         exclude_groups = { opts.exclude_groups, "t", true },
