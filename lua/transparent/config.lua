@@ -16,8 +16,6 @@ local config = {
 -- stylua: ignore end
 
 function M.set(opts)
-    -- Handle regression if opts was not passed.
-    -- Behaviour existed prior to d96b424
     opts = opts or {}
 
     vim.validate({
@@ -26,7 +24,7 @@ function M.set(opts)
         exclude_groups = { opts.exclude_groups, "t", true },
         on_clear = { opts.on_clear, "f", true },
     })
-    config = vim.tbl_extend("force", config, opts or {})
+    config = vim.tbl_extend("force", config, opts)
 end
 
 return setmetatable(M, {
