@@ -10,11 +10,10 @@ Remove all background colors to make nvim transparent.
 
 `xiyaowong/transparent.nvim`
 
-Same as other normal plugins, use your favourite plugin manager to install.
+Same as other normal plugins, use your favorite plugin manager to install.
 
-NOTE:<br/>
-It is recommended not to lazy load this plugin to avoid some strange phenomena.<br/>
-The execution of each function in the plugin is very fast and the time consumption can be ignored.
+> [!NOTE]
+> Avoid lazy-loading this plugin to ensure the highlight-clearing logic is triggered. The plugin's function runs quickly.
 
 ## Usage
 
@@ -98,7 +97,7 @@ require('transparent').clear_prefix('lualine')
 
 ---
 
-This plugin will provide a global variable: `g:transparent_enabled`(lua: `vim.g.transparent_enabled`)
+This plugin will provide a global variable: `g:transparent_enabled` (lua: `vim.g.transparent_enabled`)
 
 Some plugins or themes support setting transparency, and you can use this variable as a flag.<br/>
 eg: `require("tokyonight").setup{ transparent = vim.g.transparent_enabled }`
@@ -133,16 +132,6 @@ You can try adding this highlight group to the options:
 It is not recommended to set the floating window to be transparent, it will become very weird, and everything will be mixed together.
 
 For more information: https://github.com/xiyaowong/transparent.nvim/issues?q=label%3A%22float+window%22+sort%3Aupdated-desc
-
-## Migration Guide 2023/3/20
-
-1. remove `enable=true` in your config.
-
-2. start Neovim
-
-3. Run `:TransparentEnable`
-
-It's done, the status of `enable` will cached and the transparent effect is applyed on you neovim, enjoy :)
 
 ## Aknowledgement
 
