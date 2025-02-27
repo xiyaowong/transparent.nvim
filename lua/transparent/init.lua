@@ -113,6 +113,22 @@ function M.clear_prefix(prefix)
     clear_group(fn.getcompletion(prefix, "highlight"))
 end
 
+function M.remove_prefix(prefix)
+    if not prefix or prefix == "" then
+        return
+    end
+
+    for index, value in pairs(group_prefix_list) do
+        if value:match(prefix) then
+            table.remove(group_prefix_list, index)
+        end
+    end
+end
+
+function M.remove_all_prefix()
+    group_prefix_list = {}
+end
+
 M.setup = config.set
 M.clear_group = clear_group
 
