@@ -18,11 +18,22 @@ local config = {
 function M.set(opts)
     opts = opts or {}
 
-    vim.validate("opts", opts, "table")
-    vim.validate("groups", opts.groups, "table", true)
-    vim.validate("extra_groups", opts.extra_groups, "table", true)
-    vim.validate("exclude_groups", opts.exclude_groups, "table", true)
-    vim.validate("on_clear", opts.on_clear, "function", true)
+    if vim.fn.has("nvim-0.11") == 1 then
+        vim.validate("opts", opts, "table")
+        vim.validate("groups", opts.groups, "table", true)
+        vim.validate("extra_groups", opts.extra_groups, "table", true)
+        vim.validate("exclude_groups", opts.exclude_groups, "table", true)
+        vim.validate("on_clear", opts.on_clear, "function", true)
+    else
+        vim.validate({
+            opts = { opts, "t" },
+            groups = { opts.groups, "t", true },
+            extra_groups = { opts.extra_groups, "t", true },
+            exclude_groups = { opts.exclude_groups, "t", true },
+            on_clear = { opts.on_clear, "f", true },
+        })
+    end
+
     config = vim.tbl_extend("force", config, opts)
 end
 
