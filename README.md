@@ -17,6 +17,18 @@ Same as other normal plugins, use your favorite plugin manager to install.
 
 ## Usage
 
+> Lazy.nvim Installation
+```lua
+	{
+		"xiyaowong/transparent.nvim",
+		opts = {
+			extra_groups = {
+				"NormalFloat",
+			},
+		},
+	},
+```
+
 All available options:
 
 ```lua
@@ -119,7 +131,7 @@ eg: `require("tokyonight").setup{ transparent = vim.g.transparent_enabled }`
 You can try adding this highlight group to the options:
 
 ```lua
-{
+opts = {
   extra_groups = {
     "NormalFloat", -- plugins which have float panel such as Lazy, Mason, LspInfo
     "NvimTreeNormal" -- NvimTree
