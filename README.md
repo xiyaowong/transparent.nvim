@@ -10,7 +10,7 @@ Remove all background colors to make nvim transparent.
 
 `xiyaowong/transparent.nvim`
 
-Same as other normal plugins, use your favorite plugin manager to install.
+Install it with your favorite plugin manager, like any other plugin.
 
 > [!NOTE]
 > Avoid lazy-loading this plugin to ensure the highlight-clearing logic is triggered. The plugin's function runs quickly.
@@ -22,7 +22,7 @@ All available options:
 ```lua
  -- Optional, you don't have to run setup.
 require("transparent").setup({
-  -- table: default groups
+  -- table|function: default groups
   groups = {
     'Normal', 'NormalNC', 'Comment', 'Constant', 'Special', 'Identifier',
     'Statement', 'PreProc', 'Type', 'Underlined', 'Todo', 'String', 'Function',
@@ -30,9 +30,9 @@ require("transparent").setup({
     'SignColumn', 'CursorLine', 'CursorLineNr', 'StatusLine', 'StatusLineNC',
     'EndOfBuffer',
   },
-  -- table: additional groups that should be cleared
+  -- table|function: additional groups that should be cleared
   extra_groups = {},
-  -- table: groups you don't want to clear
+  -- table|function: groups you don't want to clear
   exclude_groups = {},
   -- function: code to be executed after highlight groups are cleared
   -- Also the user event "TransparentClear" will be triggered
@@ -41,6 +41,25 @@ require("transparent").setup({
 ```
 
 Normally, you don't need to call setup. There are two better ways for configuration.
+
+### Dynamic groups
+
+`groups`, `extra_groups` and `exclude_groups` also accept a function. It is called
+each time the highlights are cleared, so it can return groups that are only known
+at runtime. The function may return `nil` or an empty list, in which case no groups
+are added or excluded.
+
+```lua
+require("transparent").setup({
+  groups = function()
+    -- compute groups lazily
+    return { "Normal", "NormalNC" }
+  end,
+  exclude_groups = function()
+    return vim.g.transparent_enabled and { "SomeGroup" } or {}
+  end,
+})
+```
 
 ### `g:transparent_groups`
 
@@ -55,7 +74,7 @@ vim.g.transparent_groups = vim.list_extend(vim.g.transparent_groups or {}, { "Ex
 
 **You can execute this statement anywhere and as many times as you want, without worrying about whether the plugin has already been loaded or not.**
 
-Here is an example about [akinsho/bufferline.nvim](https://github.com/akinsho/bufferline.nvim).
+Here is an example using [akinsho/bufferline.nvim](https://github.com/akinsho/bufferline.nvim).
 Simply copy it and paste it after initializing bufferline in your configuration.
 
 ```lua
@@ -71,9 +90,18 @@ vim.g.transparent_groups = vim.list_extend(
 
 Some plugins define highlights dynamically, especially the highlights of icons. e.g. BufferLineDevIcon*, lualine\_*\_DevIcon\*.
 
-So, this plugin provide a helper function `clear_prefix`. It will clear all highlight groups starting with the prefix.
+So, this plugin provides a helper function `clear_prefix`. It will clear all highlight groups starting with the prefix.
 
-For some plugins of ui, you would like to clear all highlights. At this point you should use `clear_prefix`.
+The prefix can also be a function, which is called each time to compute the prefix.
+Returning `nil` means the prefix is skipped:
+
+```lua
+require('transparent').clear_prefix(function()
+  return 'BufferLine'
+end)
+```
+
+For some UI plugins, you may want to clear all highlights. At this point you should use `clear_prefix`.
 
 e.g.
 
@@ -97,12 +125,12 @@ require('transparent').clear_prefix('lualine')
 
 ---
 
-This plugin will provide a global variable: `g:transparent_enabled` (lua: `vim.g.transparent_enabled`)
+This plugin provides a global variable: `g:transparent_enabled` (lua: `vim.g.transparent_enabled`)
 
 Some plugins or themes support setting transparency, and you can use this variable as a flag.<br/>
-eg: `require("tokyonight").setup{ transparent = vim.g.transparent_enabled }`
+e.g. `require("tokyonight").setup{ transparent = vim.g.transparent_enabled }`
 
-**NOTE**: The plugin will cache and automatically apply transparency settings, so you only need to call the following command.
+**NOTE**: The plugin will cache and automatically apply transparency settings, so you only need to call the following commands.
 
 ## Commands
 
@@ -114,7 +142,7 @@ eg: `require("tokyonight").setup{ transparent = vim.g.transparent_enabled }`
 
 ## FAQ
 
-### How to enable transparent for plugin panels?
+### How to enable transparency for plugin panels?
 
 You can try adding this highlight group to the options:
 
@@ -129,10 +157,10 @@ You can try adding this highlight group to the options:
 
 ### Floating windows?
 
-It is not recommended to set the floating window to be transparent, it will become very weird, and everything will be mixed together.
+It is not recommended to make floating windows transparent; it will look very odd, and everything will be mixed together.
 
 For more information: https://github.com/xiyaowong/transparent.nvim/issues?q=label%3A%22float+window%22+sort%3Aupdated-desc
 
-## Aknowledgement
+## Acknowledgement
 
 [vim-transparent](https://github.com/Kjwon15/vim-transparent)
